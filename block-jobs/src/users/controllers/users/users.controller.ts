@@ -4,15 +4,23 @@ import {
   HttpException,
   HttpStatus,
   Param,
+  Body,
+  Post,
   Req,
   Res,
+  UsePipes,
+  ValidationPipe,
+  Inject,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
+import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
 import { UsersService } from 'src/users/services/users/users.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private userService: UsersService) {}
+  constructor(
+    @Inject('USER_SERVICE') private readonly userService: UsersService,
+  ) {}
 
   @Get(':id')
   getUsers(@Param('id') id: string, @Req() req: Request, @Res() res: Response) {
@@ -33,5 +41,11 @@ export class UsersController {
         '해당 지갑의 유저를 찾을 수 없습니다',
         HttpStatus.BAD_REQUEST,
       );
+  }
+
+  @Post('create')
+  @UsePipes(ValidationPipe)
+  createUser(@Body() createDto: CreateUserDto) {
+    this.userService.createUser(createDto);
   }
 }
