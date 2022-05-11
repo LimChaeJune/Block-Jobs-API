@@ -7,24 +7,27 @@ import {
   OneToOne,
   UpdateDateColumn,
 } from 'typeorm';
-import { Account } from './Account.entity';
-import { Industry } from './Industry.entity';
+import { AccountEntity } from './Account.entity';
+import { IndustryEntity } from './Industry.entity';
 
-@Entity()
-export class User {
-  @OneToOne(() => Account, (account) => account.user, {
+@Entity('user')
+export class UserEntity {
+  @OneToOne(() => AccountEntity, (account) => account.user, {
     primary: true,
     onDelete: 'CASCADE',
   })
-  @JoinColumn()
-  account: Account;
+  @JoinColumn({ name: 'accountAddress' })
+  account: AccountEntity;
 
-  @ManyToOne(() => Industry)
+  @ManyToOne(() => IndustryEntity)
   @JoinColumn()
-  industry: Industry;
+  industry: IndustryEntity;
 
   @Column('varchar', { length: 100, comment: '이메일', nullable: false })
   email: string;
+
+  @Column('boolean', { comment: '이메일 인증 받았는지', default: false })
+  emailVerify;
 
   @Column('varchar', { length: 50, comment: '이름', nullable: false })
   name: string;
@@ -32,19 +35,15 @@ export class User {
   @Column('varchar', { length: 50, comment: '휴대폰 번호', nullable: false })
   phone: string;
 
-  @CreateDateColumn({
-    type: 'timestamp',
-    default: () => {
-      'CURRENT_TIMESTAMP';
-    },
+  @Column({
+    type: 'datetime',
+    default: () => 'NOW()',
   })
   createAt: Date;
 
-  @UpdateDateColumn({
-    type: 'timestamp',
-    default: () => {
-      'CURRENT_TIMESTAMP';
-    },
+  @Column({
+    type: 'datetime',
+    default: () => 'NOW()',
   })
   updateAt: Date;
 }

@@ -7,33 +7,29 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Industry } from './Industry.entity';
+import { IndustryEntity } from './Industry.entity';
 
-@Entity()
-export class IndustryPosition {
+@Entity('industryposition')
+export class IndustryPositionEntity {
   @PrimaryGeneratedColumn('uuid', { comment: '포지션 아이디' })
   id: string;
 
-  @ManyToOne(() => Industry, { onDelete: 'CASCADE' })
+  @ManyToOne(() => IndustryEntity, { onDelete: 'CASCADE' })
   @JoinColumn()
-  industry: Industry;
+  industry: IndustryEntity;
 
   @Column('varchar', { length: 50, comment: '포지션 이름' })
   title: string;
 
-  @CreateDateColumn({
-    type: 'timestamp',
-    default: () => {
-      'CURRENT_TIMESTAMP';
-    },
+  @Column({
+    type: 'datetime',
+    default: () => 'NOW()',
   })
   createAt: Date;
 
-  @UpdateDateColumn({
-    type: 'timestamp',
-    default: () => {
-      'CURRENT_TIMESTAMP';
-    },
+  @Column({
+    type: 'datetime',
+    default: () => 'NOW()',
   })
   updateAt: Date;
 }

@@ -7,21 +7,21 @@ import {
   OneToOne,
   UpdateDateColumn,
 } from 'typeorm';
-import { Account } from './Account.entity';
-import { Industry } from './Industry.entity';
+import { AccountEntity } from './Account.entity';
+import { IndustryEntity } from './Industry.entity';
 
-@Entity()
-export class Enterprise {
-  @OneToOne(() => Account, (account) => account.user, {
+@Entity('enterprise')
+export class EnterpriseEntity {
+  @OneToOne(() => AccountEntity, (account) => account.user, {
     primary: true,
     onDelete: 'CASCADE',
   })
-  @JoinColumn()
-  account: Account;
+  @JoinColumn({ name: 'accountAddress' })
+  account: AccountEntity;
 
-  @ManyToOne(() => Industry)
+  @ManyToOne(() => IndustryEntity)
   @JoinColumn()
-  industry: Industry;
+  industry: IndustryEntity;
 
   @Column('varchar', { length: 100, comment: '회사명', nullable: false })
   title: string;
@@ -41,19 +41,15 @@ export class Enterprise {
   @Column('varchar', { length: 120, comment: '대표이미지', nullable: false })
   thumbnail: string;
 
-  @CreateDateColumn({
-    type: 'timestamp',
-    default: () => {
-      'CURRENT_TIMESTAMP';
-    },
+  @Column({
+    type: 'datetime',
+    default: () => 'NOW()',
   })
   createAt: Date;
 
-  @UpdateDateColumn({
-    type: 'timestamp',
-    default: () => {
-      'CURRENT_TIMESTAMP';
-    },
+  @Column({
+    type: 'datetime',
+    default: () => 'NOW()',
   })
   updateAt: Date;
 }

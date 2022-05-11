@@ -1,11 +1,23 @@
-import { Account } from './Account.entity';
-import { Industry } from './Industry.entity';
-import { IndustryPosition } from './IndustryPosition.entity';
-import { User } from './User.entity';
-import { Enterprise } from './Enterprise.entity';
+import { AccountEntity } from './Account.entity';
+import { IndustryEntity } from './Industry.entity';
+import { IndustryPositionEntity } from './IndustryPosition.entity';
+import { UserEntity } from './User.entity';
+import { EnterpriseEntity } from './Enterprise.entity';
 
-const entities = [Account, Industry, IndustryPosition, User, Enterprise];
+const entities = [
+  AccountEntity,
+  IndustryEntity,
+  IndustryPositionEntity,
+  UserEntity,
+  EnterpriseEntity,
+];
 
-export { Account, Industry, IndustryPosition, User, Enterprise };
+export {
+  AccountEntity,
+  IndustryEntity,
+  IndustryPositionEntity,
+  UserEntity,
+  EnterpriseEntity,
+};
 
 export default entities;

@@ -11,12 +11,12 @@ import {
   OneToOne,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from './User.entity';
+import { UserEntity } from './User.entity';
 
-@Entity()
-export class Account {
+@Entity('account')
+export class AccountEntity {
   @PrimaryColumn('varchar', {
-    length: 35,
+    length: 50,
     comment: '지갑주소',
   })
   accountAddress: string;
@@ -34,22 +34,19 @@ export class Account {
     comment: '회원 유형',
   })
   userType: AccountUserType;
-  @CreateDateColumn({
-    type: 'timestamp',
-    default: () => {
-      'CURRENT_TIMESTAMP';
-    },
+
+  @Column({
+    type: 'datetime',
+    default: () => 'NOW()',
   })
   createAt: Date;
 
-  @UpdateDateColumn({
-    type: 'timestamp',
-    default: () => {
-      'CURRENT_TIMESTAMP';
-    },
+  @Column({
+    type: 'datetime',
+    default: () => 'NOW()',
   })
   updateAt: Date;
 
-  @OneToOne(() => User, (user) => user.account)
-  user: User;
+  @OneToOne(() => UserEntity, (user) => user.account)
+  user: UserEntity;
 }

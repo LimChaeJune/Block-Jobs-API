@@ -1,13 +1,36 @@
-import { IsEmail, IsNotEmpty, Length } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsNotEmptyObject,
+  IsString,
+  MaxLength,
+  ValidateNested,
+} from 'class-validator';
+import { CreateAccountDto } from './CreateAccount.dto';
 
 export class CreateUserDto {
-  @Length(26, 35)
-  @IsNotEmpty()
-  accountAddress: string;
+  @IsNotEmptyObject()
+  @ValidateNested()
+  @Type(() => CreateAccountDto)
+  account: CreateAccountDto;
 
+  @IsString()
+  @IsNotEmpty()
+  industryId: string;
+
+  @IsString()
   @IsEmail()
   @IsNotEmpty()
   email: string;
 
-  created: Date;
+  @IsString()
+  @MaxLength(50)
+  @IsNotEmpty()
+  name: string;
+
+  @IsString()
+  @MaxLength(50)
+  @IsNotEmpty()
+  phone: string;
 }

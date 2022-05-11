@@ -6,40 +6,36 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Enterprise } from './Enterprise.entity';
-import { IndustryPosition } from './IndustryPosition.entity';
-import { User } from './User.entity';
+import { EnterpriseEntity } from './Enterprise.entity';
+import { IndustryPositionEntity } from './IndustryPosition.entity';
+import { UserEntity } from './User.entity';
 
-@Entity()
-export class Industry {
+@Entity('industry')
+export class IndustryEntity {
   @PrimaryGeneratedColumn('uuid', { comment: '산업군 아이디' })
   id: string;
 
   @Column('varchar', { length: 50, comment: '산업 이름' })
   title: string;
 
-  @CreateDateColumn({
-    type: 'timestamp',
-    default: () => {
-      'CURRENT_TIMESTAMP';
-    },
+  @Column({
+    type: 'datetime',
+    default: () => 'NOW()',
   })
   createAt: Date;
 
-  @UpdateDateColumn({
-    type: 'timestamp',
-    default: () => {
-      'CURRENT_TIMESTAMP';
-    },
+  @Column({
+    type: 'datetime',
+    default: () => 'NOW()',
   })
   updateAt: Date;
 
-  @OneToMany(() => IndustryPosition, (position) => position.industry)
-  positions: IndustryPosition[];
+  @OneToMany(() => IndustryPositionEntity, (position) => position.industry)
+  positions: IndustryPositionEntity[];
 
-  @OneToMany(() => User, (user) => user.industry)
-  users: IndustryPosition[];
+  @OneToMany(() => UserEntity, (user) => user.industry)
+  users: UserEntity[];
 
-  @OneToMany(() => Enterprise, (ent) => ent.industry)
-  enterprises: IndustryPosition[];
+  @OneToMany(() => EnterpriseEntity, (ent) => ent.industry)
+  enterprises: EnterpriseEntity[];
 }
