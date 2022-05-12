@@ -21,21 +21,19 @@ export class AccountService {
         HttpStatus.BAD_REQUEST,
       );
 
-    console.log(createAccount);
     const account = new AccountEntity();
     account.accountAddress = createAccount.accountAddress;
     account.accountProvider = createAccount.accountProvider;
     account.userType = createAccount.accountUserType;
 
-    console.log(account);
     const newAccount = this.accountRepository.save(account);
 
     return newAccount;
   }
 
-  private async accountCheckExist(accountAddress: string): Promise<boolean> {
+  private async accountCheckExist(address: string): Promise<boolean> {
     const account = this.accountRepository.findOne({
-      accountAddress: accountAddress,
+      accountAddress: address,
     });
     return account !== undefined;
   }
