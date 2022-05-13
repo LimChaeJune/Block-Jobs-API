@@ -102,5 +102,7 @@ dist
 
 # TernJS port file
 .tern-port
-block-jobs/env.development.local
 block-jobs/ormconfig.json
+block-jobs/src/config/env/
+*.env
+block-jobs/src/config/env/.development.env

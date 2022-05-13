@@ -1,12 +1,14 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { EmailService } from 'src/email/services/email.service';
-import { User } from 'src/users/types/Users';
 import { CreateUserDto } from '../../dtos/CreateUser.dto';
-import * as uuid from 'uuid';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/typeorm/User.entity';
 import { Repository } from 'typeorm';
-import { AccountEntity } from 'src/typeorm/Account.entity';
 import { AccountService } from 'src/account/services/account/account.service';
 import { IndustryEntity } from 'src/typeorm/Industry.entity';
 
@@ -21,10 +23,19 @@ export class UsersService {
 
   async registerUser(createUser: CreateUserDto) {
     console.log(createUser);
-    await this.userEmailCheck(createUser.email);
+
+    // 중복 이메일 체크
+    const emailCheck = await this.userEmailCheck(createUser.email);
+    if (emailCheck) {
+      throw new HttpException(
+        '이미 가입된 계정의 이메일입니다.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     const registerAccount = await this.accountService.registerAccount(
       createUser.account,
     );
+
     const user = new UserEntity();
     user.account = registerAccount;
     user.name = createUser.name;
@@ -35,11 +46,30 @@ export class UsersService {
     industry.id = createUser.industryId;
     user.industry = industry;
 
-    this.userRepository.save(user);
+    try {
+      await this.saveEntityUser(user);
+    } catch (e) {
+      throw new HttpException(
+        'DB 저장 중 오류가 발생했습니다.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
 
     // const signupVerifyToken = uuid.v1();
 
     // this.sendMemberJoinEmail(createUser.email, signupVerifyToken);
+  }
+
+  async getUserByAccount(address: string): Promise<UserEntity> {
+    const user = await this.userRepository.findOne({
+      account: { accountAddress: address },
+    });
+
+    if (!user) {
+      throw new NotFoundException('해당 유저가 존재하지 않습니다.');
+    }
+
+    return user;
   }
 
   private async userEmailCheck(email: string): Promise<boolean> {
