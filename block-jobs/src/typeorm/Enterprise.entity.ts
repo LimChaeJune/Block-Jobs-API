@@ -1,12 +1,4 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToOne,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { AccountEntity } from './Account.entity';
 import { IndustryEntity } from './Industry.entity';
 
@@ -34,6 +26,9 @@ export class EnterpriseEntity {
 
   @Column('varchar', { length: 100, comment: '주소지', nullable: false })
   address: string;
+
+  @Column('varchar', { length: 100, comment: '회사 이메일', nullable: false })
+  email: string;
 
   @Column('int', { comment: '직원 수', nullable: false })
   employees: number;

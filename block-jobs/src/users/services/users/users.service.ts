@@ -1,12 +1,14 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { EmailService } from 'src/email/services/email.service';
-import { User } from 'src/users/types/Users';
 import { CreateUserDto } from '../../dtos/CreateUser.dto';
-import * as uuid from 'uuid';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/typeorm/User.entity';
 import { Repository } from 'typeorm';
-import { AccountEntity } from 'src/typeorm/Account.entity';
 import { AccountService } from 'src/account/services/account/account.service';
 import { IndustryEntity } from 'src/typeorm/Industry.entity';
 
@@ -62,6 +64,10 @@ export class UsersService {
     const user = await this.userRepository.findOne({
       account: { accountAddress: address },
     });
+
+    if (!user) {
+      throw new NotFoundException('해당 유저가 존재하지 않습니다.');
+    }
 
     return user;
   }

@@ -15,7 +15,8 @@ export class AccountService {
     createAccount: CreateAccountDto,
   ): Promise<AccountEntity> {
     const exist = await this.accountCheckExist(createAccount.accountAddress);
-    if (!exist)
+    console.log(exist);
+    if (exist)
       throw new HttpException(
         '해당 지갑을 가지고있는 유저가 있습니다.',
         HttpStatus.BAD_REQUEST,
@@ -31,8 +32,16 @@ export class AccountService {
     return newAccount;
   }
 
+  async findAccount(address: string): Promise<AccountEntity> {
+    console.log(address);
+    const account = await this.accountRepository.findOne({
+      accountAddress: address,
+    });
+    return account;
+  }
+
   private async accountCheckExist(address: string): Promise<boolean> {
-    const account = this.accountRepository.findOne({
+    const account = await this.accountRepository.findOne({
       accountAddress: address,
     });
     return account !== undefined;
