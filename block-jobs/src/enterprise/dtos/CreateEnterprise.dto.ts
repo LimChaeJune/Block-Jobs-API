@@ -38,7 +38,7 @@ export class CreateEnterPriseDto {
 
   @IsInt()
   @IsNotEmpty()
-  employees: number;
+  employees: string;
 
   @IsString()
   @MaxLength(120)

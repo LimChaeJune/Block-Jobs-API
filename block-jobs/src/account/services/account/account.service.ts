@@ -40,7 +40,7 @@ export class AccountService {
     return account;
   }
 
-  private async accountCheckExist(address: string): Promise<boolean> {
+  async accountCheckExist(address: string): Promise<boolean> {
     const account = await this.accountRepository.findOne({
       accountAddress: address,
     });

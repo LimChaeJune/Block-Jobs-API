@@ -30,8 +30,8 @@ export class EnterpriseEntity {
   @Column('varchar', { length: 100, comment: '회사 이메일', nullable: false })
   email: string;
 
-  @Column('int', { comment: '직원 수', nullable: false })
-  employees: number;
+  @Column('varchar', { comment: '직원 수', nullable: false })
+  employees: string;
 
   @Column('varchar', { length: 120, comment: '대표이미지', nullable: false })
   thumbnail: string;

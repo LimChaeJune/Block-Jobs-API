@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AccountModule } from 'src/account/account.module';
 import { AuthenticationModule } from 'src/authentication/authentication.module';
@@ -9,13 +9,13 @@ import { EnterpriseService } from './services/enterpise/enterpise.service';
 
 @Module({
   imports: [
-    ConfigService,
+    ConfigModule,
     AuthenticationModule,
     AccountModule,
     TypeOrmModule.forFeature([EnterpriseEntity]),
   ],
   controllers: [EnterpiseController],
-  providers: [EnterpriseService],
+  providers: [EnterpriseService, ConfigService],
   exports: [EnterpriseService],
 })
 export class EnterpriseModule {}

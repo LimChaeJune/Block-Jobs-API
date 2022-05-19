@@ -1,6 +1,7 @@
 export enum AccountUserType {
   Customer = 'Customer',
   Enterprise = 'Enterprise',
+  None = 'None',
 }
 
 import {
@@ -29,7 +30,11 @@ export class AccountEntity {
 
   @Column({
     type: 'set',
-    enum: [AccountUserType.Customer, AccountUserType.Enterprise],
+    enum: [
+      AccountUserType.Customer,
+      AccountUserType.Enterprise,
+      AccountUserType.None,
+    ],
     default: AccountUserType.Customer,
     comment: '회원 유형',
   })

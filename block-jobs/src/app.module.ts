@@ -6,18 +6,19 @@ import { EmailModule } from './email/email.module';
 import { EnterpriseModule } from './enterprise/enterprise.module';
 import { UsersModule } from './users/users.module';
 import { DatabaseModule } from './config/database/database.module';
-import { AuthenticationService } from './authentication/services/authentication/authentication.service';
 import { AuthenticationModule } from './authentication/authentication.module';
+import { validationSchema } from './config/validationSchema';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: [`.development.env`],
+      envFilePath: [`${__dirname}/config/env/.${process.env.NODE_ENV}.env`],
       load: [emailConfig],
+      validationSchema: validationSchema,
     }),
-    AuthenticationModule,
     DatabaseModule,
+    AuthenticationModule,
     EmailModule,
     UsersModule,
     AccountModule,
