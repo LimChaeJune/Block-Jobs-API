@@ -11,6 +11,7 @@ import { UserEntity } from 'src/typeorm/User.entity';
 import { Repository } from 'typeorm';
 import { AccountService } from 'src/account/services/account/account.service';
 import { IndustryEntity } from 'src/typeorm/Industry.entity';
+import { JobEntity } from 'src/typeorm/Job.entity';
 
 @Injectable()
 export class UsersService {
@@ -42,9 +43,9 @@ export class UsersService {
     user.email = createUser.email;
     user.phone = createUser.phone;
 
-    const industry = new IndustryEntity();
-    industry.id = createUser.industryId;
-    user.industry = industry;
+    const job = new JobEntity();
+    job.id = createUser.jobsId;
+    user.job = job;
 
     try {
       await this.saveEntityUser(user);

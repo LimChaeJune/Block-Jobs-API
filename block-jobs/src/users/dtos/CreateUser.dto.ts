@@ -17,7 +17,7 @@ export class CreateUserDto {
 
   @IsString()
   @IsNotEmpty()
-  industryId: string;
+  jobsId: string;
 
   @IsString()
   @IsEmail()

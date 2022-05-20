@@ -1,23 +1,35 @@
 import { AccountEntity } from './Account.entity';
 import { IndustryEntity } from './Industry.entity';
-import { IndustryPositionEntity } from './IndustryPosition.entity';
 import { UserEntity } from './User.entity';
+import { JobEntity } from './Job.entity';
 import { EnterpriseEntity } from './Enterprise.entity';
+import { JobOpenningEntity } from './JobOpenning.entity';
+import { UserProfileEntity } from './UserProfile.entity';
+import { UserEducationEntity } from './Education.entity';
+import { UserCertificationEntity } from './Certification.entity';
 
 const entities = [
   AccountEntity,
   IndustryEntity,
-  IndustryPositionEntity,
+  JobEntity,
   UserEntity,
+  UserProfileEntity,
+  UserEducationEntity,
+  UserCertificationEntity,
   EnterpriseEntity,
+  JobOpenningEntity,
 ];
 
 export {
   AccountEntity,
   IndustryEntity,
-  IndustryPositionEntity,
+  JobEntity,
   UserEntity,
+  UserProfileEntity,
+  UserEducationEntity,
+  UserCertificationEntity,
   EnterpriseEntity,
+  JobOpenningEntity,
 };
 
 export default entities;

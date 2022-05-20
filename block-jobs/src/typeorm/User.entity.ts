@@ -1,27 +1,33 @@
 import {
   Column,
-  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   OneToOne,
-  UpdateDateColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { AccountEntity } from './Account.entity';
-import { IndustryEntity } from './Industry.entity';
+import { JobEntity } from './Job.entity';
+import { UserProfileEntity } from './UserProfile.entity';
 
 @Entity('user')
 export class UserEntity {
+  @PrimaryGeneratedColumn('uuid', { comment: '유저 아이디' })
+  id: string;
+
   @OneToOne(() => AccountEntity, (account) => account.user, {
-    primary: true,
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'accountAddress' })
   account: AccountEntity;
 
-  @ManyToOne(() => IndustryEntity)
+  @ManyToOne(() => JobEntity)
   @JoinColumn()
-  industry: IndustryEntity;
+  job: JobEntity;
+
+  @OneToOne(() => UserProfileEntity, (profile) => profile.user)
+  @JoinColumn()
+  profile: UserProfileEntity;
 
   @Column('varchar', { length: 100, comment: '이메일', nullable: false })
   email: string;

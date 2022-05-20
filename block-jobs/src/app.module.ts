@@ -8,6 +8,8 @@ import { UsersModule } from './users/users.module';
 import { DatabaseModule } from './config/database/database.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { validationSchema } from './config/validationSchema';
+import { IndustryModule } from './industry/industry.module';
+import { JobModule } from './job/job.module';
 
 @Module({
   imports: [
@@ -23,6 +25,8 @@ import { validationSchema } from './config/validationSchema';
     UsersModule,
     AccountModule,
     EnterpriseModule,
+    IndustryModule,
+    JobModule,
   ],
   controllers: [],
 })

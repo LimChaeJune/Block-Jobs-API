@@ -1,6 +1,14 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+} from 'typeorm';
 import { AccountEntity } from './Account.entity';
 import { IndustryEntity } from './Industry.entity';
+import { JobOpenningEntity } from './JobOpenning.entity';
 
 @Entity('enterprise')
 export class EnterpriseEntity {
@@ -14,6 +22,9 @@ export class EnterpriseEntity {
   @ManyToOne(() => IndustryEntity)
   @JoinColumn()
   industry: IndustryEntity;
+
+  @OneToMany(() => JobOpenningEntity, (jobOpen) => jobOpen.ownerEnterprise)
+  jobsOpening: JobOpenningEntity[];
 
   @Column('varchar', { length: 100, comment: '회사명', nullable: false })
   title: string;

@@ -16,7 +16,7 @@ import entities from 'src/typeorm/index.entity';
         password: config.get<string>('DB_PASSWORD'),
         database: config.get<string>('DB_NAME'),
         entities: entities,
-        synchronize: true,
+        synchronize: false,
       }),
     }),
   ],

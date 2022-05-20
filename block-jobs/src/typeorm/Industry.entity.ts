@@ -7,7 +7,6 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { EnterpriseEntity } from './Enterprise.entity';
-import { IndustryPositionEntity } from './IndustryPosition.entity';
 import { UserEntity } from './User.entity';
 
 @Entity('industry')
@@ -29,12 +28,6 @@ export class IndustryEntity {
     default: () => 'NOW()',
   })
   updateAt: Date;
-
-  @OneToMany(() => IndustryPositionEntity, (position) => position.industry)
-  positions: IndustryPositionEntity[];
-
-  @OneToMany(() => UserEntity, (user) => user.industry)
-  users: UserEntity[];
 
   @OneToMany(() => EnterpriseEntity, (ent) => ent.industry)
   enterprises: EnterpriseEntity[];
