@@ -24,7 +24,7 @@ export class AccountService {
 
     const account = new AccountEntity();
     account.accountAddress = createAccount.accountAddress;
-    account.accountProvider = createAccount.accountProvider;
+    account.accountProvider = 'metamask';
     account.userType = createAccount.accountUserType;
 
     const newAccount = this.accountRepository.save(account);
@@ -40,10 +40,10 @@ export class AccountService {
     return account;
   }
 
-  async accountCheckExist(address: string): Promise<boolean> {
+  async accountCheckExist(address: string): Promise<AccountEntity> {
     const account = await this.accountRepository.findOne({
       accountAddress: address,
     });
-    return account !== undefined;
+    return account;
   }
 }

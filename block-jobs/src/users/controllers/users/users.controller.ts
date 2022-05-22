@@ -9,6 +9,7 @@ import {
   Inject,
   Headers,
   UseGuards,
+  HttpCode,
 } from '@nestjs/common';
 import { AuthGuard } from 'src/authentication/authentication.guard';
 import { AuthenticationService } from 'src/authentication/services/authentication/authentication.service';
@@ -28,9 +29,11 @@ export class UsersController {
     return this.userService.getUserByAccount(address);
   }
 
+  @HttpCode(200)
   @Post('register')
   @UsePipes(ValidationPipe)
   createUser(@Body() createDto: CreateUserDto) {
+    console.log(createDto);
     this.userService.registerUser(createDto);
   }
 }

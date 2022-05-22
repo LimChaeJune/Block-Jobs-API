@@ -6,9 +6,9 @@ export class CreateAccountDto {
   @IsNotEmpty()
   accountAddress: string;
 
-  @IsString()
-  @IsNotEmpty()
-  accountProvider: string;
+  // @IsString()
+  // @IsNotEmpty()
+  // accountProvider: string;
 
   accountUserType: AccountUserType;
 }

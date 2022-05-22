@@ -17,7 +17,7 @@ export class AccountController {
   constructor(private readonly accountService: AccountService) {}
 
   @Get('checkaccount/:account')
-  async CheckAccount(@Param('account') params: string): Promise<boolean> {
+  async CheckAccount(@Param('account') params: string): Promise<AccountEntity> {
     return await this.accountService.accountCheckExist(params);
   }
 }

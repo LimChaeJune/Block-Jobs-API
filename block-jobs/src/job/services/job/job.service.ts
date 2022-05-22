@@ -10,7 +10,24 @@ export class JobService {
     private readonly jobRepository: Repository<JobEntity>,
   ) {}
 
-  public GetJobs(): Promise<JobEntity[]> {
-    return this.jobRepository.find({ order: { title: 'ASC' } });
+  public GetByParentIdJobs(parentId: string): Promise<JobEntity[]> {
+    return this.jobRepository.find({
+      where: { parentId: parentId },
+      order: { title: 'ASC' },
+    });
+  }
+
+  public GetRootJobs(): Promise<JobEntity[]> {
+    return this.jobRepository.find({
+      where: { level: 0 },
+      order: { title: 'ASC' },
+    });
+  }
+
+  public GetByLevelJobs(level: number): Promise<JobEntity[]> {
+    return this.jobRepository.find({
+      where: { level: level },
+      order: { title: 'ASC' },
+    });
   }
 }

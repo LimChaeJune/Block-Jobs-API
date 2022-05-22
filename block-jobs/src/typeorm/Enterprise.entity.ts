@@ -44,7 +44,7 @@ export class EnterpriseEntity {
   @Column('varchar', { comment: '직원 수', nullable: false })
   employees: string;
 
-  @Column('varchar', { length: 120, comment: '대표이미지', nullable: false })
+  @Column('varchar', { length: 120, comment: '대표이미지', nullable: true })
   thumbnail: string;
 
   @Column({

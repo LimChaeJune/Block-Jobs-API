@@ -42,15 +42,9 @@ export class EnterpriseService {
     industry.id = createEnterprise.industryId;
     enter.industry = industry;
 
-    try {
-      await this.saveEntityEnterPrise(enter);
-    } catch (e) {
-      throw new HttpException(
-        `DB 저장 중 오류가 발생했습니다.${e.message}`,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    await this.saveEntityEnterPrise(enter);
 
+    return enter;
     // const signupVerifyToken = uuid.v1();
 
     // this.sendMemberJoinEmail(createUser.email, signupVerifyToken);

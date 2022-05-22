@@ -2,6 +2,9 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
+  HttpException,
+  HttpStatus,
   Param,
   Post,
   UseGuards,
@@ -11,8 +14,9 @@ import {
 import { AuthGuard } from 'src/authentication/authentication.guard';
 import { CreateEnterPriseDto } from 'src/enterprise/dtos/CreateEnterprise.dto';
 import { EnterpriseService } from 'src/enterprise/services/enterpise/enterpise.service';
+import { EnterpriseEntity } from 'src/typeorm/Enterprise.entity';
 
-@Controller('enterpise')
+@Controller('enterprise')
 export class EnterpiseController {
   constructor(private readonly enterpriseService: EnterpriseService) {}
 
@@ -22,9 +26,20 @@ export class EnterpiseController {
     return this.enterpriseService.getEnterPriseByAccount(address);
   }
 
+  @HttpCode(200)
   @Post('register')
   @UsePipes(ValidationPipe)
-  createUser(@Body() createDto: CreateEnterPriseDto) {
-    this.enterpriseService.registerUser(createDto);
+  createUser(
+    @Body() createDto: CreateEnterPriseDto,
+  ): Promise<EnterpriseEntity> {
+    try {
+      const enterPrise = this.enterpriseService.registerUser(createDto);
+      return enterPrise;
+    } catch (error) {
+      throw new HttpException(
+        `DB 저장 중 오류가 발생했습니다. ${error.message}`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

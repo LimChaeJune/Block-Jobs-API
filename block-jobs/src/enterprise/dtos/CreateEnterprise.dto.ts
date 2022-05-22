@@ -36,13 +36,10 @@ export class CreateEnterPriseDto {
   @IsNotEmpty()
   businessNumber: string;
 
-  @IsInt()
+  @IsString()
   @IsNotEmpty()
   employees: string;
 
-  @IsString()
-  @MaxLength(120)
-  @IsNotEmpty()
   thumbnail: string;
 
   @IsString()
