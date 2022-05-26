@@ -12,6 +12,7 @@ import {
   OneToOne,
   UpdateDateColumn,
 } from 'typeorm';
+import { EnterpriseEntity } from './Enterprise.entity';
 import { UserEntity } from './User.entity';
 
 @Entity('account')
@@ -54,4 +55,7 @@ export class AccountEntity {
 
   @OneToOne(() => UserEntity, (user) => user.account)
   user: UserEntity;
+
+  @OneToOne(() => EnterpriseEntity, (enterprise) => enterprise.account)
+  enterprise: EnterpriseEntity;
 }

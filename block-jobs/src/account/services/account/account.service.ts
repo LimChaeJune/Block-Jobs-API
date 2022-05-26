@@ -41,9 +41,14 @@ export class AccountService {
   }
 
   async accountCheckExist(address: string): Promise<AccountEntity> {
-    const account = await this.accountRepository.findOne({
-      accountAddress: address,
-    });
+    const account = await this.accountRepository.findOne(
+      {
+        accountAddress: address,
+      },
+      {
+        relations: ['user', 'enterprise'],
+      },
+    );
     return account;
   }
 }
