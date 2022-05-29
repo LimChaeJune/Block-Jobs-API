@@ -15,6 +15,10 @@ export class AuthGuard implements CanActivate {
   }
 
   private validateRequest(request: Request) {
+    if (!request.headers.authorization.includes('Baarer')) {
+      return false;
+    }
+
     const jwtString = request.headers.authorization.split('Bearer ')[1];
 
     this.authService.TokenVerify(jwtString);

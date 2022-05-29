@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AccountService } from 'src/account/services/account/account.service';
 import { CreateEnterPriseDto } from 'src/enterprise/dtos/CreateEnterprise.dto';
@@ -56,6 +56,14 @@ export class EnterpriseService {
     });
 
     return enterprise;
+  }
+
+  async getAllEnterprise(): Promise<EnterpriseEntity[]> {
+    const enterRepository = await this.enterRepository.find({
+      relations: ['account', 'industry'],
+    });
+    Logger.debug(enterRepository);
+    return enterRepository;
   }
 
   private async enterCheck(businessNumber: string): Promise<boolean> {

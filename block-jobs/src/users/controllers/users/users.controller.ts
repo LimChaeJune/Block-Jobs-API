@@ -23,7 +23,7 @@ export class UsersController {
     private authService: AuthenticationService,
   ) {}
 
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @Get(':address')
   getUser(@Param('address') address: string) {
     return this.userService.getUserByAccount(address);

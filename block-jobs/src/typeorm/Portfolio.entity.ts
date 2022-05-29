@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 import { UserProfileEntity } from './UserProfile.entity';
 
 @Entity('userPortfolio')
-export class userPortfolioEntity {
+export class UserPortfolioEntity {
   @OneToOne(() => UserProfileEntity, (user) => user.portfolioes, {
     primary: true,
     onDelete: 'CASCADE',

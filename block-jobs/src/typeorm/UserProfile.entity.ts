@@ -21,6 +21,7 @@ import { UserCertificationEntity } from './Certification.entity';
 import { UserEducationEntity } from './Education.entity';
 import { JobEntity } from './Job.entity';
 import { JobOpenningEntity } from './JobOpenning.entity';
+import { UserPortfolioEntity } from './Portfolio.entity';
 import { UserEntity } from './User.entity';
 
 @Entity('userProfile')
@@ -76,6 +77,6 @@ export class UserProfileEntity {
   @OneToMany(() => UserCertificationEntity, (cert) => cert.user)
   certifications: UserCertificationEntity[];
 
-  @OneToMany(() => UserEducationEntity, (eudcation) => eudcation.user)
-  portfolioes: UserEntity[];
+  @OneToMany(() => UserPortfolioEntity, (portfolio) => portfolio.user)
+  portfolioes: UserPortfolioEntity[];
 }

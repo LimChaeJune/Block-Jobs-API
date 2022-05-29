@@ -5,6 +5,7 @@ import {
   HttpCode,
   HttpException,
   HttpStatus,
+  Logger,
   Param,
   Post,
   UseGuards,
@@ -20,16 +21,16 @@ import { EnterpriseEntity } from 'src/typeorm/Enterprise.entity';
 export class EnterpiseController {
   constructor(private readonly enterpriseService: EnterpriseService) {}
 
-  @UseGuards(AuthGuard)
-  @Get(':address')
-  getUser(@Param('address') address: string) {
+  // @UseGuards(AuthGuard)
+  @Get('getById/:address')
+  getEnterprise(@Param('address') address: string) {
     return this.enterpriseService.getEnterPriseByAccount(address);
   }
 
   @HttpCode(200)
   @Post('register')
   @UsePipes(ValidationPipe)
-  createUser(
+  createEnterprise(
     @Body() createDto: CreateEnterPriseDto,
   ): Promise<EnterpriseEntity> {
     try {
@@ -41,5 +42,12 @@ export class EnterpiseController {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+  }
+
+  @HttpCode(200)
+  @Get('all')
+  getAllEnterprise(): Promise<EnterpriseEntity[]> {
+    const enterPrise = this.enterpriseService.getAllEnterprise();
+    return enterPrise;
   }
 }
