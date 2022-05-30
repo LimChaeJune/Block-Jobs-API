@@ -45,7 +45,7 @@ export class UsersService {
 
     const job = new JobEntity();
     job.id = createUser.jobsId;
-    user.job = job;
+    user.job = [job];
 
     try {
       await this.saveEntityUser(user);

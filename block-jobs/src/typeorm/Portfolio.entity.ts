@@ -1,4 +1,10 @@
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { UserProfileEntity } from './UserProfile.entity';
 
 @Entity('userPortfolio')
@@ -9,6 +15,10 @@ export class UserPortfolioEntity {
   })
   @JoinColumn({ name: 'accountAddress' })
   user: UserProfileEntity;
+
+  @Column('uuid', { comment: '포트폴리오 ID' })
+  @PrimaryGeneratedColumn()
+  id: string;
 
   @Column('varchar', { comment: '제목', length: 100 })
   title: string;

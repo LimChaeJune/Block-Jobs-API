@@ -4,14 +4,7 @@ export enum AccountUserType {
   None = 'None',
 }
 
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryColumn,
-  OneToOne,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, PrimaryColumn, OneToOne } from 'typeorm';
 import { EnterpriseEntity } from './Enterprise.entity';
 import { UserEntity } from './User.entity';
 
@@ -22,12 +15,6 @@ export class AccountEntity {
     comment: '지갑주소',
   })
   accountAddress: string;
-
-  @Column('varchar', {
-    length: 50,
-    comment: '지갑공급자 (metamask, WalletConnect)',
-  })
-  accountProvider: string;
 
   @Column({
     type: 'set',

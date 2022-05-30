@@ -49,11 +49,10 @@ export class AuthenticationService {
         this.config.get<string>('JWT_SECRET'),
       ) as (jwt.JwtPayload | string) & AccountEntity;
 
-      const { accountAddress, accountProvider, userType } = payload;
+      const { accountAddress, userType } = payload;
 
       return {
         address: accountAddress,
-        provider: accountProvider,
         userType: userType,
       };
     } catch (e) {

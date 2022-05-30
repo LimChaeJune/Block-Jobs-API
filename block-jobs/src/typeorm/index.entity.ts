@@ -7,6 +7,7 @@ import { JobOpenningEntity } from './JobOpenning.entity';
 import { UserProfileEntity } from './UserProfile.entity';
 import { UserEducationEntity } from './Education.entity';
 import { UserCertificationEntity } from './Certification.entity';
+import { UserPortfolioEntity } from './Portfolio.entity';
 
 const entities = [
   AccountEntity,
@@ -14,6 +15,7 @@ const entities = [
   JobEntity,
   UserEntity,
   UserProfileEntity,
+  UserPortfolioEntity,
   UserEducationEntity,
   UserCertificationEntity,
   EnterpriseEntity,
@@ -26,6 +28,7 @@ export {
   JobEntity,
   UserEntity,
   UserProfileEntity,
+  UserPortfolioEntity,
   UserEducationEntity,
   UserCertificationEntity,
   EnterpriseEntity,

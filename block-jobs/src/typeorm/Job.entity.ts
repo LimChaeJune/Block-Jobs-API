@@ -1,4 +1,10 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { UserEntity } from './User.entity';
 
 @Entity('Job')
@@ -27,6 +33,6 @@ export class JobEntity {
   })
   updateAt: Date;
 
-  @OneToMany(() => UserEntity, (user) => user.job)
+  @ManyToMany(() => UserEntity, (user) => user.job)
   users: UserEntity[];
 }

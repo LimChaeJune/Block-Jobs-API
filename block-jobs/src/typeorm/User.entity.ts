@@ -2,6 +2,8 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -21,9 +23,9 @@ export class UserEntity {
   @JoinColumn({ name: 'accountAddress' })
   account: AccountEntity;
 
-  @ManyToOne(() => JobEntity)
-  @JoinColumn()
-  job: JobEntity;
+  @ManyToMany(() => JobEntity)
+  @JoinTable()
+  job: JobEntity[];
 
   @OneToOne(() => UserProfileEntity, (profile) => profile.user)
   @JoinColumn()

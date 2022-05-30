@@ -24,7 +24,6 @@ export class AccountService {
 
     const account = new AccountEntity();
     account.accountAddress = createAccount.accountAddress;
-    account.accountProvider = 'metamask';
     account.userType = createAccount.accountUserType;
 
     const newAccount = this.accountRepository.save(account);
@@ -46,7 +45,7 @@ export class AccountService {
         accountAddress: address,
       },
       {
-        relations: ['user', 'enterprise'],
+        relations: ['user', 'user.job', 'user.profile', 'enterprise'],
       },
     );
     return account;
