@@ -1,17 +1,13 @@
 import {
   Column,
-  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToMany,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import { EnterpriseEntity } from './Enterprise.entity';
 import { UserEntity } from './User.entity';
-import { UserProfileEntity } from './UserProfile.entity';
 
 @Entity('JobOpenning')
 export class JobOpenningEntity {
@@ -24,8 +20,8 @@ export class JobOpenningEntity {
   @JoinColumn({ name: 'accountAddress' })
   ownerEnterprise: EnterpriseEntity;
 
-  @ManyToMany(() => UserProfileEntity, (user) => user.JoinJobs)
-  users: UserProfileEntity[];
+  @ManyToMany(() => UserEntity, (user) => user.Joinjobs)
+  users: UserEntity[];
 
   @Column('varchar', { length: 100, comment: '근무지' })
   workSpace: string;

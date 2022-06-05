@@ -10,9 +10,11 @@ import {
   Headers,
   UseGuards,
   HttpCode,
+  Logger,
 } from '@nestjs/common';
 import { AuthGuard } from 'src/authentication/authentication.guard';
 import { AuthenticationService } from 'src/authentication/services/authentication/authentication.service';
+import { UserEntity } from 'src/typeorm/User.entity';
 import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
 import { UsersService } from 'src/users/services/users/users.service';
 
@@ -35,5 +37,11 @@ export class UsersController {
   createUser(@Body() createDto: CreateUserDto) {
     console.log(createDto);
     this.userService.registerUser(createDto);
+  }
+
+  @HttpCode(200)
+  @Post('update')
+  updateUser(@Body() updateDto: UserEntity) {
+    this.userService.updateUser(updateDto);
   }
 }

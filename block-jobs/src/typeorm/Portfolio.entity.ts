@@ -2,20 +2,13 @@ import {
   Column,
   Entity,
   JoinColumn,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { UserProfileEntity } from './UserProfile.entity';
+import { UserResumeEntity } from './Resume.entity';
 
 @Entity('userPortfolio')
 export class UserPortfolioEntity {
-  @OneToOne(() => UserProfileEntity, (user) => user.portfolioes, {
-    primary: true,
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn({ name: 'accountAddress' })
-  user: UserProfileEntity;
-
   @Column('uuid', { comment: '포트폴리오 ID' })
   @PrimaryGeneratedColumn()
   id: string;
@@ -40,4 +33,10 @@ export class UserPortfolioEntity {
     default: () => 'NOW()',
   })
   updateAt: Date;
+
+  @ManyToOne(() => UserResumeEntity, (user) => user.portfolioes, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'resumeId' })
+  resume: UserResumeEntity;
 }

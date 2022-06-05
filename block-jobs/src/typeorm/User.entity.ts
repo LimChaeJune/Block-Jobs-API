@@ -1,16 +1,23 @@
+export enum ProfileStatus {
+  JobFind = '구직중',
+  JobEnteresting = '관심 있음',
+  None = '관심 없음',
+}
+
 import {
   Column,
   Entity,
   JoinColumn,
   JoinTable,
   ManyToMany,
-  ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { AccountEntity } from './Account.entity';
 import { JobEntity } from './Job.entity';
-import { UserProfileEntity } from './UserProfile.entity';
+import { JobOpenningEntity } from './JobOpenning.entity';
+import { UserResumeEntity } from './Resume.entity';
 
 @Entity('user')
 export class UserEntity {
@@ -27,10 +34,6 @@ export class UserEntity {
   @JoinTable()
   job: JobEntity[];
 
-  @OneToOne(() => UserProfileEntity, (profile) => profile.user)
-  @JoinColumn()
-  profile: UserProfileEntity;
-
   @Column('varchar', { length: 100, comment: '이메일', nullable: false })
   email: string;
 
@@ -43,6 +46,27 @@ export class UserEntity {
   @Column('varchar', { length: 50, comment: '휴대폰 번호', nullable: false })
   phone: string;
 
+  @Column('datetime', { comment: '생년월일', nullable: true })
+  birthday!: Date;
+
+  @Column('varchar', { length: 200, comment: '주소', nullable: true })
+  address!: Date;
+
+  @Column('varchar', { length: 10, comment: '성별', nullable: true })
+  male!: string;
+
+  @Column({
+    type: 'set',
+    enum: [
+      ProfileStatus.JobEnteresting,
+      ProfileStatus.JobFind,
+      ProfileStatus.None,
+    ],
+    default: ProfileStatus.None,
+    comment: '프로필 상태',
+  })
+  userType: ProfileStatus;
+
   @Column({
     type: 'datetime',
     default: () => 'NOW()',
@@ -54,4 +78,11 @@ export class UserEntity {
     default: () => 'NOW()',
   })
   updateAt: Date;
+
+  @OneToMany(() => UserResumeEntity, (resume) => resume.user)
+  resumes: UserResumeEntity[];
+
+  @ManyToMany(() => JobOpenningEntity, (job) => job.users)
+  @JoinTable()
+  Joinjobs: JobEntity[];
 }

@@ -45,7 +45,7 @@ export class AccountService {
         accountAddress: address,
       },
       {
-        relations: ['user', 'user.job', 'user.profile', 'enterprise'],
+        relations: ['user', 'user.job', 'user.resumes', 'enterprise'],
       },
     );
     return account;

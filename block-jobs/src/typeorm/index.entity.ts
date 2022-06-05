@@ -4,20 +4,22 @@ import { UserEntity } from './User.entity';
 import { JobEntity } from './Job.entity';
 import { EnterpriseEntity } from './Enterprise.entity';
 import { JobOpenningEntity } from './JobOpenning.entity';
-import { UserProfileEntity } from './UserProfile.entity';
 import { UserEducationEntity } from './Education.entity';
 import { UserCertificationEntity } from './Certification.entity';
 import { UserPortfolioEntity } from './Portfolio.entity';
+import { UserCareerEntity } from './Career.entity';
+import { UserResumeEntity } from './Resume.entity';
 
 const entities = [
   AccountEntity,
   IndustryEntity,
   JobEntity,
   UserEntity,
-  UserProfileEntity,
+  UserResumeEntity,
   UserPortfolioEntity,
   UserEducationEntity,
   UserCertificationEntity,
+  UserCareerEntity,
   EnterpriseEntity,
   JobOpenningEntity,
 ];
@@ -27,10 +29,11 @@ export {
   IndustryEntity,
   JobEntity,
   UserEntity,
-  UserProfileEntity,
+  UserResumeEntity,
   UserPortfolioEntity,
   UserEducationEntity,
   UserCertificationEntity,
+  UserCareerEntity,
   EnterpriseEntity,
   JobOpenningEntity,
 };

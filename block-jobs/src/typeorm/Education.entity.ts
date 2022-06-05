@@ -5,35 +5,35 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { UserProfileEntity } from './UserProfile.entity';
+import { UserResumeEntity } from './Resume.entity';
 
 @Entity('userEducation')
 export class UserEducationEntity {
   @PrimaryGeneratedColumn('uuid', { comment: '학력 아이디' })
   id: string;
 
-  @ManyToOne(() => UserProfileEntity, (user) => user.educations, {
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn({ name: 'accountAddress' })
-  user: UserProfileEntity;
+  @Column({ type: 'int', comment: '시작년도', nullable: true })
+  startYear?: number;
 
-  @Column({ type: 'datetime', comment: '시작 날짜' })
-  startDt: Date;
+  @Column({ type: 'int', comment: '시작월', nullable: true })
+  startMonth?: number;
 
-  @Column({ type: 'datetime', comment: '종료 날짜' })
-  fnsDt: Date;
+  @Column({ type: 'int', comment: '종료년도', nullable: true })
+  endYear?: number;
 
-  @Column({ type: 'varchar', comment: '학교명' })
-  name: string;
+  @Column({ type: 'int', comment: '종료월', nullable: true })
+  endMonth?: number;
 
-  @Column({ type: 'varchar', comment: '전공 및 학위' })
-  major: string;
+  @Column({ type: 'varchar', comment: '학교명', nullable: true })
+  name?: string;
 
-  @Column({ type: 'varchar', comment: '경험 상세' })
-  expreience: string;
+  @Column({ type: 'varchar', comment: '전공 및 학위', nullable: true })
+  major?: string;
 
-  @Column({ type: 'bool', width: 1, comment: '재학 여부' })
+  @Column({ type: 'varchar', comment: '경험 상세', nullable: true })
+  expreience?: string;
+
+  @Column({ type: 'bool', width: 1, comment: '재학 여부', default: false })
   currentRunning: boolean;
 
   @Column({
@@ -47,4 +47,10 @@ export class UserEducationEntity {
     default: () => 'NOW()',
   })
   updateAt: Date;
+
+  @ManyToOne(() => UserResumeEntity, (user) => user.educations, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'resumeId' })
+  resume: UserResumeEntity;
 }

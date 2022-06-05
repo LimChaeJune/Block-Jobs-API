@@ -5,28 +5,24 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { UserProfileEntity } from './UserProfile.entity';
+import { UserResumeEntity } from './Resume.entity';
 
 @Entity('userCertification')
 export class UserCertificationEntity {
   @PrimaryGeneratedColumn('uuid', { comment: '자격증 아이디' })
   id: string;
 
-  @ManyToOne(() => UserProfileEntity, (user) => user.certifications, {
-    primary: true,
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn({ name: 'accountAddress' })
-  user: UserProfileEntity;
+  @Column({ type: 'int', comment: '취득년도' })
+  getYear?: number;
 
-  @Column({ type: 'datetime', comment: '취득날짜' })
-  getDt: Date;
+  @Column({ type: 'int', comment: '취득월' })
+  getMonth?: number;
 
   @Column({ type: 'varchar', comment: '자격증 명' })
-  title: string;
+  title?: string;
 
   @Column({ type: 'varchar', comment: '발행처' })
-  from: string;
+  from?: string;
 
   @Column({
     type: 'datetime',
@@ -39,4 +35,10 @@ export class UserCertificationEntity {
     default: () => 'NOW()',
   })
   updateAt: Date;
+
+  @ManyToOne(() => UserResumeEntity, (user) => user.certifications, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'resumeId' })
+  resume: UserResumeEntity;
 }

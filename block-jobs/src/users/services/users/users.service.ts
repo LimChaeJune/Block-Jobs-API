@@ -2,6 +2,7 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { EmailService } from 'src/email/services/email.service';
@@ -10,14 +11,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/typeorm/User.entity';
 import { Repository } from 'typeorm';
 import { AccountService } from 'src/account/services/account/account.service';
-import { IndustryEntity } from 'src/typeorm/Industry.entity';
 import { JobEntity } from 'src/typeorm/Job.entity';
+import { UserResumeEntity } from 'src/typeorm/Resume.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
+    @InjectRepository(UserResumeEntity)
+    private resumeRepository: Repository<UserResumeEntity>,
     private emailservice: EmailService,
     private accountService: AccountService,
   ) {}
@@ -62,15 +65,69 @@ export class UsersService {
   }
 
   async getUserByAccount(address: string): Promise<UserEntity> {
-    const user = await this.userRepository.findOne({
-      account: { accountAddress: address },
-    });
+    const user = await this.userRepository.findOne(
+      {
+        account: { accountAddress: address },
+      },
+      {
+        relations: [
+          'resumes',
+          'resumes.educations',
+          'resumes.certifications',
+          'resumes.portfolioes',
+          'resumes.careers',
+        ],
+      },
+    );
 
     if (!user) {
       throw new NotFoundException('해당 유저가 존재하지 않습니다.');
     }
 
     return user;
+  }
+
+  async updateUser(uptUser: UserEntity) {
+    try {
+      const user = await this.userRepository.findOne({ id: uptUser.id });
+      user.male = uptUser.male;
+      user.birthday = uptUser.birthday;
+      user.email = uptUser.email;
+      user.address = uptUser.address;
+
+      await this.userRepository.save(user);
+    } catch (err) {
+      Logger.debug(err);
+    }
+  }
+
+  async uptResume(resume: UserResumeEntity) {
+    try {
+      Logger.debug(resume);
+      const uptResume = await this.resumeRepository.findOne({
+        resumeId: resume.resumeId,
+      });
+      uptResume.title = resume.title;
+      uptResume.skills = resume.skills;
+      uptResume.description = resume.description;
+      uptResume.updateAt = new Date();
+
+      uptResume.careers = resume.careers;
+      uptResume.certifications = resume.certifications;
+      uptResume.educations = resume.educations;
+      uptResume.portfolioes = resume.portfolioes;
+    } catch (err) {
+      Logger.debug(err);
+    }
+  }
+
+  async addResume(resume: UserResumeEntity) {
+    try {
+      Logger.debug(resume);
+      await this.resumeRepository.save(resume);
+    } catch (err) {
+      Logger.debug(err);
+    }
   }
 
   private async userEmailCheck(email: string): Promise<boolean> {
