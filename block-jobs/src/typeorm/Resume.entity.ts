@@ -9,6 +9,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  RelationId,
 } from 'typeorm';
 import { UserEntity } from './User.entity';
 
@@ -17,8 +18,11 @@ export class UserResumeEntity {
   @ManyToOne(() => UserEntity, (user) => user.resumes, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'id' })
+  @JoinColumn({ name: 'userId' })
   user: UserEntity;
+
+  @RelationId((resume: UserResumeEntity) => resume.user)
+  userId: string;
 
   @PrimaryGeneratedColumn('uuid', { comment: '이력서 아이디' })
   resumeId: string;
@@ -40,9 +44,6 @@ export class UserResumeEntity {
 
   @OneToMany(() => UserPortfolioEntity, (portfolio) => portfolio.resume)
   portfolioes!: UserPortfolioEntity[];
-
-  @OneToMany(() => UserCareerEntity, (career) => career.resume)
-  careers!: UserCareerEntity[];
 
   @Column({
     type: 'datetime',

@@ -4,6 +4,7 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  RelationId,
 } from 'typeorm';
 import { UserResumeEntity } from './Resume.entity';
 
@@ -53,4 +54,7 @@ export class UserEducationEntity {
   })
   @JoinColumn({ name: 'resumeId' })
   resume: UserResumeEntity;
+
+  @RelationId((education: UserEducationEntity) => education.resume)
+  resumeId: string;
 }

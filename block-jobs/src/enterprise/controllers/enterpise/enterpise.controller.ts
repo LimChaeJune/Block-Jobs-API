@@ -5,15 +5,14 @@ import {
   HttpCode,
   HttpException,
   HttpStatus,
-  Logger,
   Param,
   Post,
-  UseGuards,
+  Put,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { AuthGuard } from 'src/authentication/authentication.guard';
 import { CreateEnterPriseDto } from 'src/enterprise/dtos/CreateEnterprise.dto';
+import { UpdateEnterPriseDto } from 'src/enterprise/dtos/UpdateEnterprise.dto';
 import { EnterpriseService } from 'src/enterprise/services/enterpise/enterpise.service';
 import { EnterpriseEntity } from 'src/typeorm/Enterprise.entity';
 
@@ -23,18 +22,25 @@ export class EnterpiseController {
 
   // @UseGuards(AuthGuard)
   @Get('getById/:address')
-  getEnterprise(@Param('address') address: string) {
-    return this.enterpriseService.getEnterPriseByAccount(address);
+  async getEnterprise(@Param('address') address: string) {
+    return await this.enterpriseService.getEnterPriseByAccount(address);
+  }
+
+  @HttpCode(200)
+  @Get('all')
+  async getAllEnterprise(): Promise<EnterpriseEntity[]> {
+    const enterPrise = await this.enterpriseService.getAllEnterprise();
+    return enterPrise;
   }
 
   @HttpCode(200)
   @Post('register')
   @UsePipes(ValidationPipe)
-  createEnterprise(
+  async createEnterprise(
     @Body() createDto: CreateEnterPriseDto,
   ): Promise<EnterpriseEntity> {
     try {
-      const enterPrise = this.enterpriseService.registerUser(createDto);
+      const enterPrise = await this.enterpriseService.registerUser(createDto);
       return enterPrise;
     } catch (error) {
       throw new HttpException(
@@ -45,9 +51,16 @@ export class EnterpiseController {
   }
 
   @HttpCode(200)
-  @Get('all')
-  getAllEnterprise(): Promise<EnterpriseEntity[]> {
-    const enterPrise = this.enterpriseService.getAllEnterprise();
-    return enterPrise;
+  @Put('update')
+  @UsePipes(ValidationPipe)
+  async updateEnterprise(@Body() updateDto: UpdateEnterPriseDto) {
+    try {
+      await this.enterpriseService.updateEnterprise(updateDto);
+    } catch (error) {
+      throw new HttpException(
+        `DB 저장 중 오류가 발생했습니다. ${error.message}`,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

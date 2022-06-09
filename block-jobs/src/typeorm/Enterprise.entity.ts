@@ -5,6 +5,7 @@ import {
   ManyToOne,
   OneToMany,
   OneToOne,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { AccountEntity } from './Account.entity';
 import { IndustryEntity } from './Industry.entity';
@@ -12,8 +13,10 @@ import { JobOpenningEntity } from './JobOpenning.entity';
 
 @Entity('enterprise')
 export class EnterpriseEntity {
+  @PrimaryGeneratedColumn('uuid', { comment: '기업 아이디' })
+  id: string;
+
   @OneToOne(() => AccountEntity, (account) => account.user, {
-    primary: true,
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'accountAddress' })

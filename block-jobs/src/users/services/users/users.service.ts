@@ -9,10 +9,17 @@ import { EmailService } from 'src/email/services/email.service';
 import { CreateUserDto } from '../../dtos/CreateUser.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/typeorm/User.entity';
-import { Repository } from 'typeorm';
+import { getConnection, Repository } from 'typeorm';
 import { AccountService } from 'src/account/services/account/account.service';
 import { JobEntity } from 'src/typeorm/Job.entity';
 import { UserResumeEntity } from 'src/typeorm/Resume.entity';
+import { UserEducationEntity } from 'src/typeorm/Education.entity';
+import { UserCareerEntity } from 'src/typeorm/Career.entity';
+import { UserCertificationEntity } from 'src/typeorm/Certification.entity';
+import { UserPortfolioEntity } from 'src/typeorm/Portfolio.entity';
+import { create } from 'domain';
+import { CreateCareerDto } from 'src/users/dtos/CreateCareer.dto';
+import { UpdateCareerDto } from 'src/users/dtos/UpdateCareer.dto';
 
 @Injectable()
 export class UsersService {
@@ -21,6 +28,15 @@ export class UsersService {
     private userRepository: Repository<UserEntity>,
     @InjectRepository(UserResumeEntity)
     private resumeRepository: Repository<UserResumeEntity>,
+    @InjectRepository(UserEducationEntity)
+    private educationRepository: Repository<UserEducationEntity>,
+    @InjectRepository(UserCareerEntity)
+    private careerRepostiory: Repository<UserCareerEntity>,
+    @InjectRepository(UserCertificationEntity)
+    private certRepository: Repository<UserCertificationEntity>,
+    @InjectRepository(UserPortfolioEntity)
+    private portRepository: Repository<UserPortfolioEntity>,
+
     private emailservice: EmailService,
     private accountService: AccountService,
   ) {}
@@ -75,7 +91,6 @@ export class UsersService {
           'resumes.educations',
           'resumes.certifications',
           'resumes.portfolioes',
-          'resumes.careers',
         ],
       },
     );
@@ -112,7 +127,6 @@ export class UsersService {
       uptResume.description = resume.description;
       uptResume.updateAt = new Date();
 
-      uptResume.careers = resume.careers;
       uptResume.certifications = resume.certifications;
       uptResume.educations = resume.educations;
       uptResume.portfolioes = resume.portfolioes;
@@ -121,12 +135,113 @@ export class UsersService {
     }
   }
 
-  async addResume(resume: UserResumeEntity) {
+  async addResume(createResume: UserResumeEntity) {
+    const queryRunner = await getConnection().createQueryRunner();
+    await queryRunner.startTransaction();
+
     try {
-      Logger.debug(resume);
+      Logger.debug(createResume);
+
+      const resume = new UserResumeEntity();
+      resume.resumeId = createResume.resumeId;
+      resume.title = createResume.title;
+      resume.description = createResume.description;
+      resume.skills = createResume.skills;
+
+      const user = await this.userRepository.findOne({
+        id: createResume.userId,
+      });
+      resume.user = user;
+      resume.userId = createResume.userId;
+
+      createResume.educations.forEach((edu) => {
+        edu.resumeId = resume.resumeId;
+        this.educationRepository.save(edu);
+      });
+      resume.educations = createResume.educations;
+
+      createResume.certifications.forEach((cert) => {
+        cert.resumeId = resume.resumeId;
+        this.certRepository.save(cert);
+      });
+      resume.certifications = createResume.certifications;
+
+      createResume.portfolioes.forEach((port) => {
+        port.resumeId = resume.resumeId;
+        this.portRepository.save(port);
+      });
+      resume.portfolioes = createResume.portfolioes;
+
       await this.resumeRepository.save(resume);
+
+      await queryRunner.commitTransaction();
+    } catch (err) {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  async getResumes(userId: string): Promise<UserResumeEntity[]> {
+    try {
+      return this.resumeRepository.find({
+        relations: ['user', 'educations', 'portfolioes', 'certifications'],
+        where: {
+          user: { id: userId },
+        },
+      });
     } catch (err) {
       Logger.debug(err);
+    }
+  }
+
+  async addCareers(createDto: CreateCareerDto) {
+    try {
+      const user = await this.userRepository.findOne({ id: createDto.userId });
+
+      const career = new UserCareerEntity();
+      career.user = user;
+      career.companyAddress = createDto.companyAddress;
+      career.stDt = createDto.stDt;
+      career.fnsDt = createDto.fnsDt;
+      career.description = createDto.description;
+      career.userId = createDto.userId;
+      career.roles = createDto.roles;
+
+      await this.careerRepostiory.save(career);
+    } catch (err) {
+      Logger.debug(err.message);
+      throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  async updateCareers(updateDto: UpdateCareerDto) {
+    try {
+      const career = await this.careerRepostiory.findOne({
+        id: updateDto.careerId,
+      });
+
+      career.stDt = updateDto.stDt;
+      career.fnsDt = updateDto.fnsDt;
+      career.description = updateDto.description;
+      career.roles = updateDto.roles;
+      career.transactionLink = updateDto.transactionId;
+
+      await this.careerRepostiory.save(career);
+    } catch (err) {
+      throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  async getCareers(userId: string): Promise<UserCareerEntity[]> {
+    try {
+      const careers = await this.careerRepostiory.find({
+        relations: ['user'],
+        where: { user: { id: userId } },
+      });
+      return careers;
+    } catch (err) {
+      throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 

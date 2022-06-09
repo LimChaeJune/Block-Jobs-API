@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AccountService } from 'src/account/services/account/account.service';
 import { CreateEnterPriseDto } from 'src/enterprise/dtos/CreateEnterprise.dto';
+import { UpdateEnterPriseDto } from 'src/enterprise/dtos/UpdateEnterprise.dto';
 import { EnterpriseEntity } from 'src/typeorm/Enterprise.entity';
 import { IndustryEntity } from 'src/typeorm/Industry.entity';
 import { Repository } from 'typeorm';
@@ -48,6 +49,19 @@ export class EnterpriseService {
     // const signupVerifyToken = uuid.v1();
 
     // this.sendMemberJoinEmail(createUser.email, signupVerifyToken);
+  }
+
+  async updateEnterprise(updateEnterprise: UpdateEnterPriseDto) {
+    const findEnter = await this.enterRepository.findOne({
+      where: { id: updateEnterprise.enterpriseId },
+    });
+
+    findEnter.description = updateEnterprise.description;
+    findEnter.address = updateEnterprise.address;
+    findEnter.email = updateEnterprise.email;
+    findEnter.thumbnail = updateEnterprise.thumbnail;
+
+    await this.enterRepository.save(findEnter);
   }
 
   async getEnterPriseByAccount(address: string): Promise<EnterpriseEntity> {

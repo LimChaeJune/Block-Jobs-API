@@ -10,6 +10,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
 import { validationSchema } from './config/validationSchema';
 import { IndustryModule } from './industry/industry.module';
 import { JobModule } from './job/job.module';
+import { CoinModule } from './coin/coin.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { JobModule } from './job/job.module';
     EnterpriseModule,
     IndustryModule,
     JobModule,
+    CoinModule,
   ],
   controllers: [],
 })

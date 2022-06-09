@@ -4,23 +4,23 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  RelationId,
 } from 'typeorm';
 import { UserResumeEntity } from './Resume.entity';
 
 @Entity('userPortfolio')
 export class UserPortfolioEntity {
-  @Column('uuid', { comment: '포트폴리오 ID' })
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid', { comment: '학력 아이디' })
   id: string;
 
-  @Column('varchar', { comment: '제목', length: 100 })
-  title: string;
+  @Column('varchar', { comment: '제목', length: 100, nullable: true })
+  title?: string;
 
-  @Column('text', { comment: '설명' })
-  description: string;
+  @Column('text', { comment: '설명', nullable: true })
+  description?: string;
 
-  @Column('varchar', { comment: '작품 링크', length: 200 })
-  link: string;
+  @Column('varchar', { comment: '작품 링크', length: 200, nullable: true })
+  link?: string;
 
   @Column({
     type: 'datetime',
@@ -39,4 +39,7 @@ export class UserPortfolioEntity {
   })
   @JoinColumn({ name: 'resumeId' })
   resume: UserResumeEntity;
+
+  @RelationId((port: UserPortfolioEntity) => port.resume)
+  resumeId: string;
 }

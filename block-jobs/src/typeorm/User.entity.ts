@@ -15,6 +15,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { AccountEntity } from './Account.entity';
+import { UserCareerEntity } from './Career.entity';
 import { JobEntity } from './Job.entity';
 import { JobOpenningEntity } from './JobOpenning.entity';
 import { UserResumeEntity } from './Resume.entity';
@@ -52,7 +53,19 @@ export class UserEntity {
   @Column('varchar', { length: 200, comment: '주소', nullable: true })
   address!: Date;
 
-  @Column('varchar', { length: 10, comment: '성별', nullable: true })
+  @Column('varchar', {
+    length: 200,
+    comment: '이력서 사진 주소',
+    nullable: true,
+  })
+  profilePicture?: string;
+
+  @Column('varchar', {
+    length: 10,
+    comment: '성별',
+    nullable: true,
+    default: '남',
+  })
   male!: string;
 
   @Column({
@@ -84,5 +97,8 @@ export class UserEntity {
 
   @ManyToMany(() => JobOpenningEntity, (job) => job.users)
   @JoinTable()
-  Joinjobs: JobEntity[];
+  Joinjobs: JobOpenningEntity[];
+
+  @OneToMany(() => UserCareerEntity, (career) => career.user)
+  careers!: UserCareerEntity[];
 }
