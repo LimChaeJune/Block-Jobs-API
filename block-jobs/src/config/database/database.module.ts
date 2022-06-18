@@ -9,16 +9,21 @@ import entities from 'src/typeorm/index.entity';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
-        logging: ['query', 'error'],
         type: 'mysql',
         host: config.get<string>('db.host'),
         port: config.get<number>('db.port'),
         username: config.get<string>('db.user'),
         password: config.get<string>('db.password'),
         database: config.get<string>('db.name'),
+        logging: ['query', 'error'],
         entities: entities,
         synchronize: false,
         ssl: true,
+        extra: {
+          ssl: {
+            rejectUnauthorized: false,
+          },
+        },
       }),
     }),
   ],
