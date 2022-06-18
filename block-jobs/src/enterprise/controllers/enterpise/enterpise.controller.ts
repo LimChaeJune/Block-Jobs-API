@@ -5,25 +5,33 @@ import {
   HttpCode,
   HttpException,
   HttpStatus,
+  Logger,
   Param,
   Post,
   Put,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { CreateEnterPriseDto } from 'src/enterprise/dtos/CreateEnterprise.dto';
 import { UpdateEnterPriseDto } from 'src/enterprise/dtos/UpdateEnterprise.dto';
 import { EnterpriseService } from 'src/enterprise/services/enterpise/enterpise.service';
 import { EnterpriseEntity } from 'src/typeorm/Enterprise.entity';
 
 @Controller('enterprise')
+@ApiTags('기업 API')
 export class EnterpiseController {
   constructor(private readonly enterpriseService: EnterpriseService) {}
 
   // @UseGuards(AuthGuard)
-  @Get('getById/:address')
-  async getEnterprise(@Param('address') address: string) {
+  @Get('byaccount/:address')
+  async getEnterpriseByAccount(@Param('address') address: string) {
     return await this.enterpriseService.getEnterPriseByAccount(address);
+  }
+
+  @Get('byid/:enterpriseId')
+  async getEnterpriseById(@Param('enterpriseId') enterpriseId: string) {
+    return await this.enterpriseService.getEnterpriseById(enterpriseId);
   }
 
   @HttpCode(200)
@@ -55,6 +63,7 @@ export class EnterpiseController {
   @UsePipes(ValidationPipe)
   async updateEnterprise(@Body() updateDto: UpdateEnterPriseDto) {
     try {
+      Logger.debug(updateDto);
       await this.enterpriseService.updateEnterprise(updateDto);
     } catch (error) {
       throw new HttpException(

@@ -7,16 +7,11 @@ import {
   UsePipes,
   ValidationPipe,
   Inject,
-  Headers,
-  UseGuards,
   HttpCode,
   Logger,
-  HttpException,
-  HttpStatus,
-  BadRequestException,
   UseFilters,
 } from '@nestjs/common';
-import { AuthGuard } from 'src/authentication/authentication.guard';
+import { ApiTags } from '@nestjs/swagger';
 import { AuthenticationService } from 'src/authentication/services/authentication/authentication.service';
 import { HttpExceptionFilter } from 'src/http-exception.filter';
 import { UserResumeEntity } from 'src/typeorm/Resume.entity';
@@ -27,6 +22,7 @@ import { UpdateCareerDto } from 'src/users/dtos/UpdateCareer.dto';
 import { UsersService } from 'src/users/services/users/users.service';
 
 @Controller('users')
+@ApiTags('산업군 API')
 export class UsersController {
   constructor(
     @Inject('USER_SERVICE') private readonly userService: UsersService,
@@ -43,6 +39,12 @@ export class UsersController {
   @Get('resume/:userId')
   async getUserResumes(@Param('userId') userId: string) {
     return await this.userService.getResumes(userId);
+  }
+
+  @Get('resumeById/:resumeId')
+  async getUserResume(@Param('resumeId') resumeId: string) {
+    Logger.debug(resumeId);
+    return await this.userService.getResume(resumeId);
   }
 
   @HttpCode(200)
@@ -63,6 +65,7 @@ export class UsersController {
   @UseFilters(HttpExceptionFilter)
   @Post('update')
   async updateUser(@Body() updateDto: UserEntity) {
+    Logger.debug(updateDto);
     await this.userService.updateUser(updateDto);
   }
 

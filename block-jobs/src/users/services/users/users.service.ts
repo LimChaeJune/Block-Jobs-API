@@ -105,6 +105,8 @@ export class UsersService {
   async updateUser(uptUser: UserEntity) {
     try {
       const user = await this.userRepository.findOne({ id: uptUser.id });
+      user.phone = uptUser.phone;
+      user.name = uptUser.name;
       user.male = uptUser.male;
       user.birthday = uptUser.birthday;
       user.email = uptUser.email;
@@ -188,6 +190,19 @@ export class UsersService {
         relations: ['user', 'educations', 'portfolioes', 'certifications'],
         where: {
           user: { id: userId },
+        },
+      });
+    } catch (err) {
+      Logger.debug(err);
+    }
+  }
+
+  async getResume(resumeId: string): Promise<UserResumeEntity> {
+    try {
+      return this.resumeRepository.findOne({
+        relations: ['user', 'educations', 'portfolioes', 'certifications'],
+        where: {
+          resumeId: resumeId,
         },
       });
     } catch (err) {

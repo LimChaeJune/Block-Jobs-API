@@ -72,6 +72,15 @@ export class EnterpriseService {
     return enterprise;
   }
 
+  async getEnterpriseById(enterpriseId: string): Promise<EnterpriseEntity> {
+    const enterprise = await this.enterRepository.findOne({
+      where: { id: enterpriseId },
+      relations: ['industry', 'account'],
+    });
+
+    return enterprise;
+  }
+
   async getAllEnterprise(): Promise<EnterpriseEntity[]> {
     const enterRepository = await this.enterRepository.find({
       relations: ['account', 'industry'],
