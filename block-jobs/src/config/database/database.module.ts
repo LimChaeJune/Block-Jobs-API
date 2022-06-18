@@ -18,12 +18,6 @@ import entities from 'src/typeorm/index.entity';
         logging: ['query', 'error'],
         entities: entities,
         synchronize: false,
-        ssl: true,
-        extra: {
-          ssl: {
-            rejectUnauthorized: false,
-          },
-        },
       }),
     }),
   ],
