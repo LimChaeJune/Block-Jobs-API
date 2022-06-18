@@ -18,9 +18,8 @@ import entities from 'src/typeorm/index.entity';
         database: config.get<string>('db.name'),
         entities: entities,
         synchronize: false,
-        // ssl: true,
-        extra: {
-          ssl: true,
+        ssl: {
+          rejectUnauthorized: false,
         },
       }),
     }),
