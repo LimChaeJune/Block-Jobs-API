@@ -15,7 +15,7 @@ import entities from 'src/typeorm/index.entity';
         username: config.get<string>('db.user'),
         password: config.get<string>('db.password'),
         database: config.get<string>('db.name'),
-        logging: ['query', 'error'],
+        logging: ['error'],
         entities: entities,
         synchronize: false,
       }),
